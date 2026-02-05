@@ -30,7 +30,7 @@ export const siteConfig: SiteConfig = {
     github: 'https://github.com/denjiwantcoding',
     linkedin: 'https://linkedin.com/in/denyaryseptialazuardi',
     twitter: 'https://twitter.com/username',
-    instagram: 'https://instagram.com/denyaryy__'
+    instagram: 'https://instagram.com/denyaryy_'
   },
   navigation: [
     { name: 'Home', href: '/' },
