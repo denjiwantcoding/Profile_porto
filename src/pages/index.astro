@@ -1,0 +1,222 @@
+---
+import MainLayout from '@layouts/MainLayout.astro';
+import Hero from '@components/Hero.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import SkillBadge from '@components/SkillBadge.astro';
+import type { Project } from './api/projects';
+import { siteConfig } from '@data/site';
+
+// Import projects data directly
+const projects: Project[] = [
+  {
+    id: 1,
+    title: 'Sistem Pendukung keputusan Pemilihan Tempat PKL',
+    slug: 'sistem-pendukung-keputusan-pemilihan-tempat-pkl',
+    description: 'Full-stack .',
+    longDescription: ' Sistem Pendukung Keputusan Pemilihan Tempak PKL Menggunakan Metode AHP dan Borda',
+    image: '/images/projects/SPK PKL.png',
+    tags: ['PHP','Bootstrap','MySQL'],
+    date: '2025-01-01',
+    github: 'https://github.com/denjiwantcoding/Project_PemilihanTempatPKL_AHP_BORDA',
+    featured: true
+  },
+  {
+    id: 2,
+      title: 'Aplikasi Resep Makanan',
+      slug: 'aplikasi-resep-makanan',
+      description: 'Aplikasi mobile untuk mencari dan menyimpan resep makanan favorit dengan pilihan kategori yang beragam. ',
+      longDescription: 'Aplikasi mobile yang user frendly untuk mencari, menyimpan, dan berbagi resep makanan. Fitur pencarian berdasarkan bahan, kategori, dan nama makanan. Integrasi dengan API resep populer untuk update resep terbaru.',
+      image: '/images/projects/resepMakanan.png',
+      tags: ['Flutter', 'Dart', 'Firebase'],
+      date: '2024-12-15',
+      github: 'https://github.com/denjiwantcoding/aplikasi_resep_API',
+      featured: true
+  },
+  
+  {
+    id: 4,
+    title: 'DenjiAgent',
+    slug: 'ai-chatbot-assistant',
+    description: 'Integrasi n8n menggunakan API dari deepseek.',
+    longDescription: 'Chatbot pintar yang dapat memahami pertanyaan pelanggan dalam bahasa natural, memberikan jawaban relevan, dan melakukan escalation ke human agent jika diperlukan.',
+    image: '/images/projects/ChatBot.jpeg',
+    tags: ['n8n', 'Deepseek API', 'Docker', 'telegram Bot'],
+    date: '2024-10-10',
+    github: 'https://telegram.com/DenjiAgent',
+    featured: true
+  },
+  {
+    id: 7,
+    title: 'Blogku',
+    slug: 'website-pengelola-artikel-berita',
+    description: 'Website ini untuk Pengelola artikel multi login untuk admin dan tamu.',
+    longDescription: 'Website pengelola artikel berita dengan fitur multi login untuk admin dan tamu. Admin dapat menambah, mengedit, dan menghapus artikel, sedangkan tamu dapat membaca artikel yang tersedia.',
+    image: '/images/projects/Blogku.png',
+    tags: ['HTML', 'CSS','Bootstrap', 'PHP', 'MySQL'],
+    date: '2024-12-25',
+    github: 'https://github.com/denjiwantcoding/PengelolaArtikel',
+    featured: false
+  }
+];
+
+const featuredProjects = projects.filter(p => p.featured);
+
+const skills = [
+  { name: 'JavaScript', level: 'intermediate' as const, icon: '⚡' },
+  { name: 'Java', level: 'expert' as const, icon: '⚡' },
+  { name: 'Python', level: 'intermediate' as const, icon: '🐍' },
+  { name: 'PHP', level: 'expert' as const, icon: '⚡' },
+  { name: 'Flutter', level: 'expert' as const, icon: '🔷' },
+  { name: 'Bootstrap', level: 'expert' as const, icon: '⚛️' },
+  { name: 'Node.js', level: 'advanced' as const, icon: '🟢' },
+  { name: 'Astro', level: 'advanced' as const, icon: '🚀' },
+  { name: 'Tailwind CSS', level: 'expert' as const, icon: '💨' },
+  { name: 'MySQL', level: 'advanced' as const, icon: '🍃' },
+  { name: 'PostgreSQL', level: 'intermediate' as const, icon: '🐘' },
+  { name: 'Docker', level: 'intermediate' as const, icon: '🐳' },
+];
+---
+
+<MainLayout
+  title="Home"
+  description="Website portofolio profesional menampilkan project dan skill saya"
+>
+  <!-- Hero Section -->
+  <Hero />
+
+  <!-- Featured Projects Section -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="mb-4">Featured Projects</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Berikut adalah beberapa project terbaik yang telah saya kerjakan
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {featuredProjects.map((project: any) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+
+      <div class="text-center">
+        <a href="/projects" class="btn btn-primary">
+          View All Projects
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="section bg-gray-50">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="mb-4">Skills & Technologies</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Teknologi dan tools yang saya kuasai dan gunakan dalam pengembangan project
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3 justify-center max-w-4xl mx-auto">
+        {skills.map((skill) => (
+          <SkillBadge skill={skill.name} level={skill.level} icon={skill.icon} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section">
+    <div class="container">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="mb-4">About Me</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          <!-- Profile Image (larger version) -->
+          <div class="md:col-span-1 flex justify-center">
+            <div class="relative group">
+              <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden border-4 border-primary-100 shadow-2xl transform group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src="/images/ProfileFormal.jpeg"
+                  alt={siteConfig.author}
+                  class="w-full h-full object-cover"
+                  onerror="this.src='https://ui-avatars.com/api/?name={siteConfig.author}&size=400&background=0ea5e9&color=fff&bold=true'"
+                />
+              </div>
+              <!-- Decorative elements -->
+              <div class="absolute -inset-4 bg-gradient-to-r from-primary-400 to-primary-600 rounded-2xl -z-10 opacity-20 blur-xl group-hover:opacity-30 transition-opacity"></div>
+            </div>
+          </div>
+
+          <!-- About Text -->
+          <div class="md:col-span-2">
+            <div class="card">
+              <div class="prose prose-lg mx-auto">
+                <p>
+                  Saya adalah seorang <strong>Junior Web Developer</strong> yang passionate dalam
+                  menciptakan aplikasi web dan mobile yang modern, performant, dan user-friendly.
+                </p>
+                <p>
+                  Dengan pengalaman lebih dari 3 tahun di Kampus, saya telah mengerjakan
+                  berbagai project mulai dari e-commerce, fintech, hingga AI applications.
+                </p>
+                <p>
+                  Saya selalu berusaha untuk terus belajar dan mengikuti perkembangan teknologi terbaru
+                  untuk memberikan solusi terbaik bagi setiap project yang saya kerjakan.
+                </p>
+              </div>
+
+              <div class="mt-8 flex gap-4 justify-center md:justify-start">
+                <a href="/contact" class="btn btn-primary">
+                  Get In Touch
+                </a>
+                <!-- <a href="/resume.pdf" target="_blank" class="btn btn-outline">
+                  Download CV
+                </a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section bg-gradient-to-br from-primary-600 to-primary-700 text-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="mb-4 text-white">Ready to Work Together?</h2>
+        <p class="text-xl text-primary-100 mb-8">
+          Saya terbuka untuk project freelance, kolaborasi, atau posisi full-time.
+          Mari diskusikan project Anda!
+        </p>
+        <a href="/contact" class="btn bg-white text-primary-600 hover:bg-gray-100">
+          Contact Me Now
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .prose {
+    @apply text-gray-600;
+  }
+  
+  .prose strong {
+    @apply text-gray-900 font-semibold;
+  }
+
+  .prose p {
+    @apply mb-4;
+  }
+</style>

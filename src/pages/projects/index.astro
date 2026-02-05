@@ -1,0 +1,192 @@
+---
+import MainLayout from '@layouts/MainLayout.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import type { Project } from '../api/projects';
+
+// Import all projects directly
+const projects: Project[] = [
+  {
+    id: 1,
+    title: 'Sistem Pendukung keputusan Pemilihan Tempat PKL',
+    slug: 'sistem-pendukung-keputusan-pemilihan-tempat-pkl',
+    description: 'Full-stack .',
+    longDescription: ' Sistem Pendukung Keputusan Pemilihan Tempak PKL Menggunakan Metode AHP dan Borda',
+    image: '/images/projects/SPK PKL.png',
+    tags: ['PHP','Bootstrap','MySQL'],
+    date: '2025-01-01',
+    github: 'https://github.com/denjiwantcoding/Project_PemilihanTempatPKL_AHP_BORDA',
+    featured: true
+  },
+  {
+    id: 2,
+      title: 'Aplikasi Resep Makanan',
+      slug: 'aplikasi-resep-makanan',
+      description: 'Aplikasi mobile untuk mencari dan menyimpan resep makanan favorit dengan pilihan kategori yang beragam. ',
+      longDescription: 'Aplikasi mobile yang user frendly untuk mencari, menyimpan, dan berbagi resep makanan. Fitur pencarian berdasarkan bahan, kategori, dan nama makanan. Integrasi dengan API resep populer untuk update resep terbaru.',
+      image: '/images/projects/resepMakanan.png',
+      tags: ['Flutter', 'Dart', 'Firebase'],
+      date: '2024-12-15',
+      github: 'https://github.com/denjiwantcoding/aplikasi_resep_API',
+      featured: true
+  },
+  {
+    id: 3,
+      title: 'SIAK Sekolah',
+      slug: 'siak-sekolah',
+      description: 'Sistem Informasi Akademi Sekolah Multi Login Menggunakan Flutter.',
+      longDescription: 'Aplikasi dibuat dengan framework Flutter Multi login sebagai guru, admin, dan siswa. guru bisa mengelola nilai siswa, admin mengelola data sekolah, dan siswa bisa melihat nilai serta jadwal pelajaran.sementara data disimpan di firebase.',
+      image: '/images/projects/siak-sekolah.jpeg',
+      tags: ['Flutter', 'Dart', 'Firebase'],
+      date: '2024-11-20',
+      github: 'https://github.com/username/portfolio-cms',
+      featured: true
+  },
+  {
+    id: 4,
+    title: 'DenjiAgent',
+    slug: 'ai-chatbot-assistant',
+    description: 'Integrasi n8n menggunakan API dari deepseek.',
+    longDescription: 'Chatbot pintar yang dapat memahami pertanyaan pelanggan dalam bahasa natural, memberikan jawaban relevan, dan melakukan escalation ke human agent jika diperlukan.',
+    image: '/images/projects/ChatBot.jpeg',
+    tags: ['n8n', 'Deepseek API', 'Docker', 'telegram Bot'],
+    date: '2024-10-10',
+    github: 'https://telegram.com/DenjiAgent',
+    featured: true
+  },
+  // {
+  //   id: 5,
+  //   title: 'Task Management Tool',
+  //   slug: 'task-management-tool',
+  //   description: 'Aplikasi manajemen tugas dengan kolaborasi tim dan Kanban board.',
+  //   longDescription: 'Tool manajemen proyek dengan fitur Kanban board, Gantt chart, time tracking, team collaboration, file sharing, dan integrasi dengan tools populer seperti Slack dan Google Drive.',
+  //   image: '/images/projects/task-manager.jpg',
+  //   tags: ['Vue.js', 'Laravel', 'MySQL', 'Redis', 'Socket.io'],
+  //   date: '2024-09-05',
+  //   github: 'https://github.com/username/task-manager',
+  //   demo: 'https://task-manager-demo.com',
+  //   featured: false
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Weather Forecast App',
+  //   slug: 'weather-forecast-app',
+  //   description: 'Aplikasi prakiraan cuaca dengan visualisasi data interaktif.',
+  //   longDescription: 'Aplikasi cuaca dengan data real-time dari multiple weather APIs, visualisasi grafik interaktif, notifikasi cuaca ekstrem, dan forecast 7 hari ke depan.',
+  //   image: '/images/projects/weather-app.jpg',
+  //   tags: ['Svelte', 'D3.js', 'OpenWeather API', 'Vercel'],
+  //   date: '2024-08-15',
+  //   github: 'https://github.com/username/weather-app',
+  //   demo: 'https://weather-app-demo.vercel.app',
+  //   featured: false
+  // }
+  {
+    id: 7,
+    title: 'Blogku',
+    slug: 'website-pengelola-artikel-berita',
+    description: 'Website ini untuk Pengelola artikel multi login untuk admin dan tamu.',
+    longDescription: 'Website pengelola artikel berita dengan fitur multi login untuk admin dan tamu. Admin dapat menambah, mengedit, dan menghapus artikel, sedangkan tamu dapat membaca artikel yang tersedia.',
+    image: '/images/projects/Blogku.png',
+    tags: ['HTML', 'CSS','Bootstrap', 'PHP', 'MySQL'],
+    date: '2024-12-25',
+    github: 'https://github.com/denjiwantcoding/PengelolaArtikel',
+    featured: false
+  }
+];
+
+const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
+---
+
+<MainLayout
+  title="Projects"
+  description="Portfolio project yang telah saya kerjakan"
+>
+  <section class="section pt-32">
+    <div class="container">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="mb-4">My Projects</h1>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Koleksi project yang telah saya kerjakan, mulai dari web applications,
+          mobile apps, hingga AI-powered solutions
+        </p>
+      </div>
+
+      <!-- Filter Buttons (Optional - for future implementation) -->
+      <div class="flex flex-wrap gap-3 justify-center mb-12">
+        {categories.map((category) => (
+          <button
+            class="px-6 py-2 rounded-lg font-medium text-sm transition-all hover:scale-105"
+            class:list={[
+              category === 'All'
+                ? 'bg-primary-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ]}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project: any) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+
+      <!-- No Projects Message -->
+      {projects.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-gray-500 text-lg">No projects found</p>
+        </div>
+      )}
+
+      <!-- Stats Section -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="card text-center">
+          <div class="text-4xl font-bold text-primary-600 mb-2">
+            {projects.length}+
+          </div>
+          <div class="text-gray-600">Projects Completed</div>
+        </div>
+        <div class="card text-center">
+          <div class="text-4xl font-bold text-primary-600 mb-2">2+</div>
+          <div class="text-gray-600">Years Experience</div>
+        </div>
+        <div class="card text-center">
+          <div class="text-4xl font-bold text-primary-600 mb-2">0</div>
+          <div class="text-gray-600">Happy Clients</div>
+        </div>
+        <div class="card text-center">
+          <div class="text-4xl font-bold text-primary-600 mb-2">10+</div>
+          <div class="text-gray-600">Technologies</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  /* Add animation for project cards */
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  article {
+    animation: slide-up 0.5s ease-out forwards;
+  }
+
+  article:nth-child(1) { animation-delay: 0.1s; }
+  article:nth-child(2) { animation-delay: 0.2s; }
+  article:nth-child(3) { animation-delay: 0.3s; }
+  article:nth-child(4) { animation-delay: 0.4s; }
+  article:nth-child(5) { animation-delay: 0.5s; }
+  article:nth-child(6) { animation-delay: 0.6s; }
+</style>

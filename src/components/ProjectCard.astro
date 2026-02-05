@@ -1,0 +1,72 @@
+---
+interface Props {
+  project: {
+    title: string;
+    slug: string;
+    description: string;
+    image?: string;
+    tags?: string[];
+    date?: string;
+  };
+}
+
+const { project } = Astro.props;
+---
+
+<article class="card group hover:-translate-y-2">
+  <!-- Project Image -->
+  {project.image && (
+    <div class="relative h-48 -mx-6 -mt-6 mb-4 overflow-hidden rounded-t-xl">
+      <img
+        src={project.image}
+        alt={project.title}
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+    </div>
+  )}
+
+  <!-- Project Content -->
+  <div class="space-y-3">
+    <h3 class="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+      {project.title}
+    </h3>
+
+    <p class="text-gray-600 text-sm line-clamp-3">
+      {project.description}
+    </p>
+
+    <!-- Tags -->
+    {project.tags && project.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {project.tags.map((tag: string) => (
+          <span class="px-3 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Date and Link -->
+    <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+      {project.date && (
+        <span class="text-xs text-gray-500">
+          {new Date(project.date).toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'short'
+          })}
+        </span>
+      )}
+      
+      <a
+        href={`/projects/${project.slug}`}
+        class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all"
+      >
+        View Details
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</article>
