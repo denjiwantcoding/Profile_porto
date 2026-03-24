@@ -6,9 +6,7 @@ import vercel from '@astrojs/vercel/serverless';
 // https://astro.build/config
 export default defineConfig({
   output: 'hybrid', // Allows API routes to work
-  adapter: vercel({
-    runtime: 'nodejs18'
-  }),
+  adapter: vercel(),
   integrations: [
     react(),
     tailwind()
