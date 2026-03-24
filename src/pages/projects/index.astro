@@ -93,7 +93,30 @@ const projects: Project[] = [
   }
 ];
 
-const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
+const determineCategory = (project: Project): string => {
+  const tagsLower = (project.tags || []).map((tag) => tag.toLowerCase());
+
+  if (tagsLower.some((tag) => ['flutter', 'dart', 'react native', 'android', 'ios'].includes(tag))) {
+    return 'Mobile';
+  }
+
+  if (tagsLower.some((tag) => ['tensorflow', 'python', 'deepseek api', 'openai', 'machine learning', 'ai'].includes(tag))) {
+    return 'AI/ML';
+  }
+
+  if (tagsLower.some((tag) => ['n8n', 'docker', 'redis', 'socket.io'].includes(tag))) {
+    return 'Tools';
+  }
+
+  return 'Web';
+};
+
+const projectItems = projects.map((project) => ({
+  ...project,
+  category: determineCategory(project)
+}));
+
+const categories = ['All', ...Array.from(new Set(projectItems.map((project) => project.category)))];
 ---
 
 <MainLayout
@@ -103,7 +126,7 @@ const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
   <section class="section pt-32">
     <div class="container">
       <!-- Header -->
-      <div class="text-center mb-12">
+      <div class="text-center mb-12 scroll-reveal">
         <h1 class="mb-4">My Projects</h1>
         <p class="text-gray-600 text-lg max-w-2xl mx-auto">
           Koleksi project yang telah saya kerjakan, mulai dari web applications,
@@ -112,9 +135,12 @@ const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
       </div>
 
       <!-- Filter Buttons (Optional - for future implementation) -->
-      <div class="flex flex-wrap gap-3 justify-center mb-12">
+      <div class="flex flex-wrap gap-3 justify-center mb-12" id="project-category-filters">
         {categories.map((category) => (
           <button
+            type="button"
+            data-category-filter={category}
+            aria-pressed={category === 'All' ? 'true' : 'false'}
             class="px-6 py-2 rounded-lg font-medium text-sm transition-all hover:scale-105"
             class:list={[
               category === 'All'
@@ -128,16 +154,23 @@ const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
       </div>
 
       <!-- Projects Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project: any) => (
-          <ProjectCard project={project} />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+        {projectItems.map((project: any) => (
+          <div data-project-item data-project-category={project.category}>
+            <ProjectCard project={project} />
+          </div>
         ))}
       </div>
 
       <!-- No Projects Message -->
-      {projects.length === 0 && (
-        <div class="text-center py-12">
+      {projectItems.length === 0 && (
+        <div class="text-center py-12" id="no-projects-message">
           <p class="text-gray-500 text-lg">No projects found</p>
+        </div>
+      )}
+      {projectItems.length > 0 && (
+        <div class="text-center py-12 hidden" id="no-projects-message">
+          <p class="text-gray-500 text-lg">No projects found in this category</p>
         </div>
       )}
 
@@ -145,7 +178,7 @@ const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
       <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="card text-center">
           <div class="text-4xl font-bold text-primary-600 mb-2">
-            {projects.length}+
+            {projectItems.length}+
           </div>
           <div class="text-gray-600">Projects Completed</div>
         </div>
@@ -190,3 +223,47 @@ const categories = ['All', 'Web', 'Mobile', 'AI/ML', 'Tools'];
   article:nth-child(5) { animation-delay: 0.5s; }
   article:nth-child(6) { animation-delay: 0.6s; }
 </style>
+
+<script>
+  const filterContainer = document.getElementById('project-category-filters');
+  const projectItems = Array.from(document.querySelectorAll('[data-project-item]'));
+  const noProjectsMessage = document.getElementById('no-projects-message');
+
+  if (filterContainer && projectItems.length > 0) {
+    const filterButtons = Array.from(filterContainer.querySelectorAll('[data-category-filter]'));
+
+    /** @param {string} category */
+    const applyFilter = (category) => {
+      let visibleCount = 0;
+
+      projectItems.forEach((item) => {
+        const itemCategory = item.getAttribute('data-project-category');
+        const isVisible = category === 'All' || itemCategory === category;
+
+        item.classList.toggle('hidden', !isVisible);
+        if (isVisible) visibleCount += 1;
+      });
+
+      filterButtons.forEach((button) => {
+        const isActive = button.getAttribute('data-category-filter') === category;
+
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        button.classList.toggle('bg-primary-600', isActive);
+        button.classList.toggle('text-white', isActive);
+        button.classList.toggle('bg-gray-100', !isActive);
+        button.classList.toggle('text-gray-700', !isActive);
+      });
+
+      if (noProjectsMessage) {
+        noProjectsMessage.classList.toggle('hidden', visibleCount > 0);
+      }
+    };
+
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category-filter') || 'All';
+        applyFilter(category);
+      });
+    });
+  }
+</script>

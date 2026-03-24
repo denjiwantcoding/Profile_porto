@@ -1,0 +1,342 @@
+---
+// Parallax Background Component with Mouse Interaction
+---
+
+<div class="parallax-container">
+  <!-- Background Layers -->
+  <div class="parallax-layer layer-1"></div>
+  <div class="parallax-layer layer-2"></div>
+  <div class="parallax-layer layer-3"></div>
+  
+  <!-- Floating Shapes -->
+  <div class="floating-shapes">
+    <div class="shape shape-circle"></div>
+    <div class="shape shape-square"></div>
+    <div class="shape shape-triangle"></div>
+    <div class="shape shape-circle-2"></div>
+    <div class="shape shape-hexagon"></div>
+  </div>
+  
+  <!-- Gradient Orbs -->
+  <div class="gradient-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+</div>
+
+<style>
+  .parallax-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .parallax-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .layer-1 {
+    background: radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
+  }
+
+  .layer-2 {
+    background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+  }
+
+  .layer-3 {
+    background: radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%);
+  }
+
+  /* Floating Shapes */
+  .floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .shape {
+    position: absolute;
+    opacity: 0.1;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .shape-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+    top: 10%;
+    left: 15%;
+    animation: floatAnimation 20s ease-in-out infinite;
+  }
+
+  .shape-square {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    top: 60%;
+    right: 20%;
+    transform: rotate(45deg);
+    animation: floatAnimation 15s ease-in-out infinite reverse;
+  }
+
+  .shape-triangle {
+    width: 0;
+    height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 100px solid rgba(59, 130, 246, 0.3);
+    top: 70%;
+    left: 10%;
+    animation: floatAnimation 18s ease-in-out infinite;
+  }
+
+  .shape-circle-2 {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    top: 30%;
+    right: 15%;
+    animation: floatAnimation 22s ease-in-out infinite;
+  }
+
+  .shape-hexagon {
+    width: 100px;
+    height: 58px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    position: relative;
+    top: 80%;
+    right: 10%;
+    opacity: 0.08;
+    animation: floatAnimation 25s ease-in-out infinite reverse;
+  }
+
+  .shape-hexagon:before,
+  .shape-hexagon:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+  }
+
+  .shape-hexagon:before {
+    bottom: 100%;
+    border-bottom: 29px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .shape-hexagon:after {
+    top: 100%;
+    border-top: 29px solid rgba(245, 158, 11, 0.3);
+  }
+
+  /* Gradient Orbs */
+  .gradient-orbs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.3;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .orb-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.4), transparent);
+    top: -10%;
+    left: -10%;
+    animation: orbFloat 15s ease-in-out infinite;
+  }
+
+  .orb-2 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent);
+    bottom: -10%;
+    right: -10%;
+    animation: orbFloat 18s ease-in-out infinite reverse;
+  }
+
+  .orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.25), transparent);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: orbFloat 20s ease-in-out infinite;
+  }
+
+  /* Animations */
+  @keyframes floatAnimation {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-30px) rotate(10deg);
+    }
+  }
+
+  @keyframes orbFloat {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -30px) scale(1.1);
+    }
+    66% {
+      transform: translate(-30px, 30px) scale(0.9);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .shape {
+      opacity: 0.05;
+    }
+    
+    .orb {
+      filter: blur(40px);
+      opacity: 0.2;
+    }
+    
+    .shape-circle {
+      width: 100px;
+      height: 100px;
+    }
+    
+    .shape-square {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
+
+<script>
+  // Parallax Mouse Interaction
+  const parallaxContainer = document.querySelector('.parallax-container');
+  const layers = document.querySelectorAll<HTMLElement>('.parallax-layer');
+  const shapes = document.querySelectorAll<HTMLElement>('.shape');
+  const orbs = document.querySelectorAll<HTMLElement>('.orb');
+
+  if (parallaxContainer) {
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    // Smooth animation using RAF
+    function animate() {
+      // Smooth interpolation
+      currentX += (mouseX - currentX) * 0.1;
+      currentY += (mouseY - currentY) * 0.1;
+
+      // Update layers with different speeds for depth effect
+      layers.forEach((layer, index) => {
+        const speed = (index + 1) * 0.05;
+        const x = currentX * speed;
+        const y = currentY * speed;
+        layer.style.transform = `translate(${x}px, ${y}px)`;
+      });
+
+      // Update shapes
+      shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 0.08;
+        const x = currentX * speed * -1; // Reverse direction for contrast
+        const y = currentY * speed * -1;
+        shape.style.transform = `translate(${x}px, ${y}px)`;
+      });
+
+      // Update orbs
+      orbs.forEach((orb, index) => {
+        const speed = (index + 1) * 0.03;
+        const x = currentX * speed;
+        const y = currentY * speed;
+        orb.style.transform = `translate(${x}px, ${y}px)`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    // Mouse move handler
+    document.addEventListener('mousemove', (e) => {
+      const rect = parallaxContainer.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Calculate relative position from center (-1 to 1)
+      mouseX = ((e.clientX - rect.left - centerX) / centerX) * 50;
+      mouseY = ((e.clientY - rect.top - centerY) / centerY) * 50;
+    });
+
+    // Touch support for mobile
+    document.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      const rect = parallaxContainer.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      mouseX = ((touch.clientX - rect.left - centerX) / centerX) * 30;
+      mouseY = ((touch.clientY - rect.top - centerY) / centerY) * 30;
+    });
+
+    // Reset on mouse leave
+    parallaxContainer.addEventListener('mouseleave', () => {
+      mouseX = 0;
+      mouseY = 0;
+    });
+
+    // Parallax Scrolling Effect
+    let scrollY = 0;
+    
+    window.addEventListener('scroll', () => {
+      scrollY = window.pageYOffset;
+      
+      // Update shapes based on scroll position
+      shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 0.15;
+        const yOffset = scrollY * speed;
+        const currentTransform = shape.style.transform || '';
+        const mouseTransform = currentTransform.match(/translate\(([^)]+)\)/);
+        
+        if (mouseTransform) {
+          const [x, y] = mouseTransform[1].split(',').map(v => parseFloat(v));
+          shape.style.transform = `translate(${x}px, ${y - yOffset}px)`;
+        } else {
+          shape.style.transform = `translateY(-${yOffset}px)`;
+        }
+      });
+      
+      // Update orbs with parallax scroll
+      orbs.forEach((orb, index) => {
+        const speed = (index + 1) * 0.08;
+        const yOffset = scrollY * speed;
+        orb.style.transform = `translateY(-${yOffset}px)`;
+      });
+      
+      // Add rotation to layers based on scroll
+      layers.forEach((layer, index) => {
+        const rotation = scrollY * 0.02 * (index + 1);
+        layer.style.transform = `rotate(${rotation}deg) scale(${1 + scrollY * 0.0001})`;
+      });
+    });
+
+    // Start animation
+    animate();
+  }
+</script>

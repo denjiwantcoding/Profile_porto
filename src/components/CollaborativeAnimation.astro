@@ -1,0 +1,312 @@
+---
+// Collaborative Animation Effects - Simulates realtime collaboration
+---
+
+<div class="collaborative-container">
+  <!-- Cursor Trail -->
+  <canvas id="cursor-trail" class="cursor-trail-canvas"></canvas>
+  
+  <!-- Click Ripple Effect -->
+  <div id="ripple-container" class="ripple-container"></div>
+  
+  <!-- Typing Indicators -->
+  <div id="typing-indicators" class="typing-indicators"></div>
+</div>
+
+<style>
+  .collaborative-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .cursor-trail-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ripple-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.4), transparent);
+    animation: ripple-animation 1s ease-out forwards;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
+  }
+
+  /* Typing Indicators */
+  .typing-indicators {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .typing-indicator {
+    background: white;
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .typing-indicator-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+  }
+
+  .typing-dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #94a3b8;
+    animation: typing-bounce 1.4s infinite;
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typing-bounce {
+    0%, 60%, 100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-6px);
+    }
+  }
+
+  /* Particle Trail */
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle-fade 1s ease-out forwards;
+  }
+
+  @keyframes particle-fade {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--tx), var(--ty)) scale(0);
+      opacity: 0;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .typing-indicators {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Collaborative Animation Controller
+  class CollaborativeAnimations {
+    private canvas: HTMLCanvasElement | null;
+    private ctx: CanvasRenderingContext2D | null;
+    private particles: Array<{x: number, y: number, vx: number, vy: number, life: number, color: string}> = [];
+    private cursorColors = ['#0ea5e9', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b'];
+    private cursorNames = ['Alex', 'Jordan', 'Sam', 'Taylor', 'Morgan'];
+
+    constructor() {
+      this.canvas = document.getElementById('cursor-trail') as HTMLCanvasElement;
+      this.ctx = this.canvas?.getContext('2d');
+      this.init();
+    }
+
+    init() {
+      if (!this.canvas || !this.ctx) return;
+
+      // Set canvas size
+      this.resizeCanvas();
+      window.addEventListener('resize', () => this.resizeCanvas());
+
+      // Mouse move - cursor trail
+      document.addEventListener('mousemove', (e) => this.createParticles(e.clientX, e.clientY));
+
+      // Click - ripple effect
+      document.addEventListener('click', (e) => this.createRipple(e.clientX, e.clientY));
+
+      // Show typing indicators occasionally
+      this.scheduleTypingIndicators();
+
+      // Start animation loop
+      this.animate();
+    }
+
+    resizeCanvas() {
+      if (!this.canvas) return;
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+    }
+
+    createParticles(x: number, y: number) {
+      // Create 3 particles per frame
+      for (let i = 0; i < 3; i++) {
+        this.particles.push({
+          x,
+          y,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          life: 1,
+          color: this.cursorColors[Math.floor(Math.random() * this.cursorColors.length)]
+        });
+      }
+
+      // Limit particle count
+      if (this.particles.length > 100) {
+        this.particles = this.particles.slice(-100);
+      }
+    }
+
+    createRipple(x: number, y: number) {
+      const rippleContainer = document.getElementById('ripple-container');
+      if (!rippleContainer) return;
+
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple';
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      rippleContainer.appendChild(ripple);
+
+      setTimeout(() => ripple.remove(), 1000);
+    }
+
+    scheduleTypingIndicators() {
+      const show = () => {
+        if (Math.random() > 0.5) {
+          this.showTypingIndicator();
+        }
+        setTimeout(show, 8000 + Math.random() * 10000);
+      };
+      setTimeout(show, 5000);
+    }
+
+    showTypingIndicator() {
+      const container = document.getElementById('typing-indicators');
+      if (!container) return;
+
+      const name = this.cursorNames[Math.floor(Math.random() * this.cursorNames.length)];
+      const color = this.cursorColors[Math.floor(Math.random() * this.cursorColors.length)];
+
+      const indicator = document.createElement('div');
+      indicator.className = 'typing-indicator';
+      indicator.innerHTML = `
+        <div class="typing-indicator-avatar" style="background: ${color};">
+          ${name[0]}
+        </div>
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      `;
+
+      container.appendChild(indicator);
+
+      setTimeout(() => {
+        indicator.style.animation = 'slideInRight 0.3s ease-out reverse';
+        setTimeout(() => indicator.remove(), 300);
+      }, 2000 + Math.random() * 3000);
+    }
+
+    animate() {
+      if (!this.ctx || !this.canvas) return;
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      // Update and draw particles
+      this.particles = this.particles.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.02;
+
+        if (p.life > 0) {
+          this.ctx!.globalAlpha = p.life;
+          this.ctx!.fillStyle = p.color;
+          this.ctx!.beginPath();
+          this.ctx!.arc(p.x, p.y, 3, 0, Math.PI * 2);
+          this.ctx!.fill();
+          return true;
+        }
+        return false;
+      });
+
+      this.ctx.globalAlpha = 1;
+      requestAnimationFrame(() => this.animate());
+    }
+  }
+
+  // Initialize on load
+  if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => {
+      new CollaborativeAnimations();
+    });
+  }
+</script>

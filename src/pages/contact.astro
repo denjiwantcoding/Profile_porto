@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import MainLayout from '@layouts/MainLayout.astro';
 import ContactForm from '../components/ContactForm';
 import { siteConfig } from '@data/site';
@@ -35,7 +37,7 @@ import { siteConfig } from '@data/site';
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-medium text-gray-900">Email</h3>
+                  <h3 aria-setsize="10" class="font-medium text-gray-900">Email</h3>
                   <a href={`mailto:${siteConfig.email}`} class="text-primary-600 hover:underline">
                     {siteConfig.email}
                   </a>

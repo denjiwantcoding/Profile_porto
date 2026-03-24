@@ -1,0 +1,33 @@
+---
+// Scroll Reveal Component - Animates elements when they come into view
+---
+
+<script>
+  // Intersection Observer for Scroll Reveal
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        // Optional: unobserve after reveal for performance
+        // observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe all elements with scroll-reveal classes
+  document.addEventListener('DOMContentLoaded', () => {
+    const revealElements = document.querySelectorAll(
+      '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale'
+    );
+    
+    revealElements.forEach((element) => {
+      observer.observe(element);
+    });
+  });
+
+</script>

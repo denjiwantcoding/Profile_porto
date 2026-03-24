@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'static', // Change to static for now
+  output: 'hybrid', // Allows API routes to work
   integrations: [
     react(),
     tailwind()

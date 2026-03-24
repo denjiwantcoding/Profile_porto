@@ -55,6 +55,7 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
       });
 
       const result = await response.json();
+      console.log('API Response:', result, 'Status:', response.status);
 
       if (result.success) {
         setStatus({
@@ -79,6 +80,9 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
           type: 'error',
           message: result.error || 'Terjadi kesalahan'
         });
+        if (result.debug) {
+          console.error('Debug info:', result.debug);
+        }
       }
     } catch (error) {
       setStatus({

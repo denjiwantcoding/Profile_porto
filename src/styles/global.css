@@ -13,8 +13,57 @@
     @apply bg-white text-gray-900 antialiased;
   }
 
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+
   html {
     scroll-behavior: smooth;
+  }
+  
+  /* Scroll Reveal - Hidden by default */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .scroll-reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .scroll-reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .scroll-reveal-scale.revealed {
+    opacity: 1;
+    transform: scale(1);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -37,6 +86,26 @@
 @layer components {
   .btn {
     @apply px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center gap-2;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  .btn:active::before {
+    width: 300px;
+    height: 300px;
   }
 
   .btn-primary {
@@ -68,6 +137,85 @@
   }
 }
 
+/* Dark theme overrides for existing utility-heavy markup */
+.dark .card {
+  background-color: rgb(15 23 42);
+  color: rgb(226 232 240);
+  border: 1px solid rgb(51 65 85);
+}
+
+.dark .input {
+  background-color: rgb(15 23 42);
+  color: rgb(226 232 240);
+  border-color: rgb(71 85 105);
+}
+
+.dark .input::placeholder {
+  color: rgb(148 163 184);
+}
+
+.dark .btn-secondary {
+  background-color: rgb(51 65 85);
+  color: rgb(241 245 249);
+}
+
+.dark .btn-secondary:hover {
+  background-color: rgb(71 85 105);
+}
+
+.dark .btn-outline {
+  border-color: rgb(56 189 248);
+  color: rgb(125 211 252);
+}
+
+.dark .btn-outline:hover {
+  background-color: rgb(30 41 59);
+}
+
+.dark .text-gray-900 {
+  color: rgb(241 245 249) !important;
+}
+
+.dark .text-gray-700 {
+  color: rgb(226 232 240) !important;
+}
+
+.dark .text-gray-600 {
+  color: rgb(203 213 225) !important;
+}
+
+.dark .text-gray-500 {
+  color: rgb(148 163 184) !important;
+}
+
+.dark .bg-white {
+  background-color: rgb(15 23 42) !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: rgb(30 41 59) !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: rgb(51 65 85) !important;
+}
+
+.dark .border-gray-200 {
+  border-color: rgb(51 65 85) !important;
+}
+
+.dark .border-gray-100 {
+  border-color: rgb(30 41 59) !important;
+}
+
+.dark .prose {
+  color: rgb(203 213 225);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background-color: rgb(15 23 42);
+}
+
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400;
@@ -79,6 +227,121 @@
 
   .animation-delay-400 {
     animation-delay: 400ms;
+  }
+  
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+  
+  .animation-delay-800 {
+    animation-delay: 800ms;
+  }
+}
+
+/* Professional Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(14, 165, 233, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.8), 0 0 30px rgba(14, 165, 233, 0.6);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 0.5s ease-out forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Stagger animation for cards */
+.stagger-item {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 100ms; }
+.stagger-item:nth-child(2) { animation-delay: 200ms; }
+.stagger-item:nth-child(3) { animation-delay: 300ms; }
+.stagger-item:nth-child(4) { animation-delay: 400ms; }
+.stagger-item:nth-child(5) { animation-delay: 500ms; }
+.stagger-item:nth-child(6) { animation-delay: 600ms; }
+
+/* Smooth page transitions */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
   }
 }
 

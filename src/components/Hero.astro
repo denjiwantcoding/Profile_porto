@@ -10,15 +10,16 @@ interface Props {
 const { title, subtitle, showProfileImage = true } = Astro.props;
 ---
 
-<section class="section bg-gradient-to-br from-primary-50 via-white to-primary-50 min-h-[80vh] flex items-center pt-16">
-  <div class="container">
+<section class="section bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 min-h-[80vh] flex items-center pt-16 relative overflow-hidden transition-colors duration-300">
+  <!-- Content -->
+  <div class="container relative z-10">
     <div class="max-w-4xl mx-auto text-center">
       
       <!-- Profile Image -->
       {showProfileImage && (
-        <div class="mb-8 flex justify-center animate-fade-in">
-          <div class="relative">
-            <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+        <div class="mb-8 flex justify-center animate-fadeInScale">
+          <div class="relative animate-float">
+            <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-2xl hover:shadow-primary-300 transition-all duration-500 hover:scale-110 animate-glow">
               <img
                 src="/images/profile.jpeg"
                 alt={siteConfig.author}
@@ -26,39 +27,40 @@ const { title, subtitle, showProfileImage = true } = Astro.props;
                 onerror="this.src='https://ui-avatars.com/api/?name={siteConfig.author}&size=200&background=0ea5e9&color=fff&bold=true'"
               />
             </div>
-            <!-- Decorative ring -->
+            <!-- Decorative ring with enhanced animation -->
             <div class="absolute inset-0 rounded-full border-4 border-primary-200 animate-pulse"></div>
+            <div class="absolute -inset-2 rounded-full border-2 border-primary-100 opacity-50 animate-ping"></div>
           </div>
         </div>
       )}
       <!-- Greeting -->
-      <div class="mb-6 animate-fade-in">
-        <span class="inline-block px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
+      <div class="mb-6 animate-fadeInUp animation-delay-200">
+        <span class="inline-block px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium hover:bg-primary-200 transition-all duration-300 hover:scale-105">
           👋 Welcome to my portfolio
         </span>
       </div>
 
       <!-- Main Heading -->
-      <h1 class="mb-6 animate-fade-in animation-delay-200">
+      <h1 class="mb-6 animate-fadeInUp animation-delay-400">
         {title || `Hi, I'm ${siteConfig.author}`}
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-xl md:text-2xl text-gray-600 mb-8 animate-fade-in animation-delay-400">
+      <p class="text-xl md:text-2xl text-gray-600 mb-8 animate-fadeInUp animation-delay-600">
         {subtitle || siteConfig.description}
       </p>
 
       <!-- CTA Buttons -->
-      <div class="flex flex-wrap gap-4 justify-center animate-fade-in animation-delay-400">
-        <a href="/projects" class="btn btn-primary">
+      <div class="flex flex-wrap gap-4 justify-center animate-fadeInUp animation-delay-800">
+        <a href="/projects" class="btn btn-primary group">
           View Projects
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
-        <a href="/contact" class="btn btn-outline">
+        <a href="/contact" class="btn btn-outline group">
           Contact Me
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </a>
